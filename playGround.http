@@ -1,0 +1,113 @@
+### Variables
+@baseUrl = http://localhost:3000/api/v1
+@contentType = application/json
+@Cookie=access-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUzMThhZjBmLTE5OGEtNDIxMS1hMjUzLWU3NGIyNGE3N2VlZCIsInVzZXJuYW1lIjoiZHJvbmEiLCJpYXQiOjE3NjY1NzgwMzksImV4cCI6MTc2NjU4ODgzOX0.knUJbgTDS5LUXW5c1g1AJFoRFiK19T8AxYDb4r6x398
+### Register a new user
+POST {{baseUrl}}/register
+Content-Type: {{contentType}}
+
+{
+    "username": "drona",
+    "email": "dorna@example2.com",
+    "password": "SecurePassword123"
+}
+
+###
+
+### Login User
+POST {{baseUrl}}/login
+Content-Type: {{contentType}}
+
+{
+    "username": "drona",
+    "password": "SecurePassword123"
+}
+
+###
+GET {{baseUrl}}/info
+Cookie: {{Cookie}}
+Content-Type: {{contentType}}
+
+
+### =========================
+### Create Content
+### POST /content
+### =========================
+POST {{baseUrl}}/content
+Content-Type: {{contentType}}
+Cookie: {{Cookie}}
+
+{
+  "title": "My First Blog",
+  "content": "This is the content body",
+  "link": "https://example.com",
+  "tags": ["backend", "node", "prisma"],
+  "type": "blog",
+  "isPublic": false
+}
+
+###
+
+### =========================
+### Get Content (pagination)
+### GET /content?skip=0&limit=10
+### =========================
+GET {{baseUrl}}/content?skip=0&limit=40
+Content-Type: {{contentType}}
+Cookie: {{Cookie}}
+
+###
+
+### =========================
+### Update Content by ID (PATCH-like)
+### PUT /content/:contentId
+### =========================
+PATCH  {{baseUrl}}/content/1e8e2798-e9b7-4be9-919c-f184b4e6c96d
+Content-Type: {{contentType}}
+Cookie: {{Cookie}}
+
+{
+  "title": "updated title",
+  "content": "Updated content text",
+  "tags": "node,exprss,prisma",
+  "isPublic": false
+}
+
+###
+
+### =========================
+### Delete Content by ID
+### DELETE /content/:contentId
+### =========================
+DELETE {{baseUrl}}/content/fbb5e5b4-724f-4f1e-a7b3-212c7c0bb681
+Content-Type: {{contentType}}
+Cookie: {{Cookie}}
+
+###
+
+### =========================
+### Delete ALL Content for User
+### DELETE /content
+### =========================
+DELETE {{baseUrl}}/content
+Content-Type: {{contentType}}
+Cookie: {{Cookie}}
+
+
+
+### =========================
+### Create/Share Link
+### POST /share
+### =========================
+GET  {{baseUrl}}/share?share=true
+Content-Type: {{contentType}}
+Cookie: {{Cookie}}
+
+
+## =========================
+### Get Content Using Share Link
+### GET /share/:hash
+### =========================
+GET {{baseUrl}}/share/ff3b8e47-218f-4175-af8a-c85da52b903f
+Content-Type: {{contentType}}
+
