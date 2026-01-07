@@ -50,14 +50,14 @@ export const LoginRequest = async (req: Request, res: Response) => {
     }
     res.cookie('access-token', login.access_token, {
       httpOnly: true,
-      sameSite: 'none',
+      sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
       path: '/',
     });
 
     res.cookie('refresh-token', login.refresh_token, {
       httpOnly: true,
-      sameSite: 'none',
+      sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
       path: '/',
     });

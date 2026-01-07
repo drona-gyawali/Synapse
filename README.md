@@ -1,9 +1,11 @@
 
 # Synapse - Your second Brain 
 
-**Backend**
-
 > **"Never lose a thought again."** > Found something interesting online? A video, a PDF, or a deep-dive article? Don't let it slip away. **Synapse** is a centralized platform to store, organize, and share your digital knowledge with the world at your fingertips.
+
+## Demo
+[product demo](/public/demo.webm)
+
 
 ## Features
 

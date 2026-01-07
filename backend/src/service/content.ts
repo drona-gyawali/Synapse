@@ -2,6 +2,7 @@ import { ContentRepo } from '../repo/contentRepo';
 import { Content } from '../types/global';
 import logger from '../utils/logger';
 import { getErrorMessage } from '../utils/utils';
+import { prisma } from '../config/db';
 
 export const contentRepo = new ContentRepo();
 
@@ -33,6 +34,24 @@ export const getContent = async (
   } catch (error) {
     logger.error(
       `Content failed to fetch for ${userId} | details=${getErrorMessage(error)}`
+    );
+  }
+};
+
+// TODO: Migrate this db state in the repository module
+export const getContentByType = async (type: string, userId: string) => {
+  try {
+    const _getContentbyType = await prisma.content.findMany({
+      where: { userId: userId, type: type },
+    });
+    if (!_getContentbyType) {
+      return null;
+    }
+
+    return _getContentbyType;
+  } catch (error) {
+    logger.error(
+      `Content failed to fetch for ${userId} by type | details=${getErrorMessage(error)}`
     );
   }
 };

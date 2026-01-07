@@ -7,6 +7,7 @@ import {
   DeleteContentRequestbyAll,
   DeleteContentRequestbyId,
   UpdateContentRequestbyId,
+  GetContentType,
 } from '../controller/content';
 
 import { shareRequest, receiverLinkRequest } from '../controller/link';
@@ -27,7 +28,7 @@ router.get('/content', authMiddleware, GetContentRequest);
 router.delete('/content/:contentId', authMiddleware, DeleteContentRequestbyId);
 router.delete('/content', authMiddleware, DeleteContentRequestbyAll);
 router.patch('/content/:contentId', authMiddleware, UpdateContentRequestbyId);
-
+router.get('/content-type', authMiddleware, GetContentType);
 /* 
     Link Route
 */

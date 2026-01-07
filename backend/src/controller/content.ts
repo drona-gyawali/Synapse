@@ -1,6 +1,11 @@
-import { createContent, getContent, contentRepo } from '../service/content';
+import {
+  createContent,
+  getContent,
+  contentRepo,
+  getContentByType,
+} from '../service/content';
 import { Content, contentUpdate } from '../types/global';
-import { Request, Response } from 'express';
+import { Request, Response, urlencoded } from 'express';
 import { getResponseMessage, getErrorMessage } from '../utils/utils';
 import logger from '../utils/logger';
 
@@ -147,6 +152,33 @@ export const UpdateContentRequestbyId = async (req: Request, res: Response) => {
       res,
       500,
       `Content failed while updating ${getErrorMessage(error)}`
+    );
+  }
+};
+
+export const GetContentType = async (req: Request, res: Response) => {
+  try {
+    const { type } = req.query;
+    const userId = String(req?.user?.id);
+    if (!type || !userId) {
+      return getResponseMessage(req, res, 400, 'Invalid Input');
+    }
+
+    const getContent = await getContentByType(
+      type.toString(),
+      userId.toString()
+    );
+    if (!getContent || getContent == null) {
+      return getResponseMessage(req, res, 400, 'Content is not avaliable');
+    }
+
+    return getResponseMessage(req, res, 200, getContent);
+  } catch (error) {
+    return getResponseMessage(
+      req,
+      res,
+      500,
+      `Content failed while fetching by type ${getErrorMessage(error)}`
     );
   }
 };
