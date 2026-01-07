@@ -3,9 +3,12 @@
 
 > **"Never lose a thought again."** > Found something interesting online? A video, a PDF, or a deep-dive article? Don't let it slip away. **Synapse** is a centralized platform to store, organize, and share your digital knowledge with the world at your fingertips.
 
+---
 ## Demo
-[product demo](/public/demo.webm)
 
+https://github.com/user-attachments/assets/59a8bfd4-f686-44b6-be39-dccb816d29e7
+
+---
 
 ## Features
 
