@@ -1,4 +1,4 @@
-import { Post, Get, queryGet, delContent } from "./api";
+import { Post, Get, queryGet, delContent, Put } from "./api";
 import  type { contentformField } from "../types/formTypes";
 import { logger } from "../utils/logger";
 
@@ -50,5 +50,20 @@ export const delContentbyId = async (id:string) => {
         return _delContent
     }catch (error) {
         logger(`Delete content failed  | detail=${error}`)
+    }
+}
+
+
+
+
+export const UpdateContent = async (id:string, data:contentformField) => {
+    try {
+        const updated = await Put("content", id, data)
+        if(!updated) {
+            return " Content updation failed"
+        }
+        return updated
+    } catch (error) {
+        logger(`content updation failed  | detail=${error}`)
     }
 }

@@ -4,27 +4,26 @@ import { Input } from "./Input";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import type { contentformField } from "../types/formTypes";
-import { createContent } from "../api/content";
+import { UpdateContent } from "../api/content";
 import { defaultInputStyle } from "../pages/Signin";
-import { ContentType } from "../utils/constants";
 import { useQueryClient } from "@tanstack/react-query";
+
 
 export interface ModalBehave extends contentformField {
     open: boolean;
     close: () => void;
-    
-    
+    id?:string
+    setcontextOpen?: () => void;
+   
 }
 
-export function CreateContentModal(props: ModalBehave) {
+export function UpdateContentModal(props: ModalBehave) {
     if (!props.open) return null;
     const { register, handleSubmit, watch , setValue} = useForm<contentformField>({
         defaultValues: {
-            type: "general",
-            isPublic: false
+            isPublic: true
         }
     })
-
 
     const isPublic = watch("isPublic")
 
@@ -32,23 +31,28 @@ export function CreateContentModal(props: ModalBehave) {
     const handleToggle = () => {
         setValue("isPublic", !isPublic)
     }
+
+    
+
+    // To trigger it:
+    // mutation.mutate({ id: '123', data: myFormData });
     const queryClient = useQueryClient()
     const mutation = useMutation({
-        mutationFn: createContent,
+        mutationFn: ({ id, data }: { id: string, data: any }) => UpdateContent(id, data),
         onSuccess: () => {
-            props.close()
-            queryClient.invalidateQueries(["content"])
+           props.setcontextOpen &&  props?.setcontextOpen()
+            props.close();
+            queryClient.invalidateQueries(["content"]);
         }
-    })
+    });
 
-
-    const onSubmit = (data:contentformField) => {
-        
+    const onSubmit = (data: contentformField) => {
         const formattedData = {
             ...data,
-            tags: typeof data.tags === 'string' ? data.tags.split(',').map(t => t.trim()) : data.tags
+            tags: data.tags
         }
-        mutation.mutate(formattedData)
+       // Pass everything as one object to match the mutationFn above
+        mutation.mutate({ id: String(props.id), data: formattedData });
     }
 
     return (
@@ -63,7 +67,7 @@ export function CreateContentModal(props: ModalBehave) {
                 <div className="flex justify-between items-center mb-6">
                     <div className="flex  items-center gap-2 font-bold">
                         <BrainCogIcon color="gray" size={18} />
-                        <h2 className="text-xl font-bold text-gray-500">{"Store your brain"}</h2>
+                        <h2 className="text-xl font-bold text-gray-500">{"Update your brain"}</h2>
                     </div>
                     <div
                         className="p-1 hover:bg-gray-100 rounded-full cursor-pointer text-gray-500 transition-colors"
@@ -75,38 +79,23 @@ export function CreateContentModal(props: ModalBehave) {
 
                 {/* Form Body */}
                 <div className="space-y-6">
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    <form  onSubmit={handleSubmit(onSubmit)}>
                     <div className="flex flex-col w-full gap-4">
 
                         <div className="flex flex-col gap-1">
-                            <label className="text-[1rem] font-semibold text-gray-500 ml-1">Title *</label>
-                            <Input  register={register("title",{required: true}) }
+                            <label className="text-[1rem] font-semibold text-gray-500 ml-1">Title</label>
+                            <Input value={props.title}  register={register("title",{required: true}) }
                             style={defaultInputStyle} type="text" placeholder="Keep it catchy..." />
                         </div>
 
                         <div className="flex flex-col gap-1">
-                            <label className="text-[1rem] font-semibold text-gray-500 ml-1">Content/Link *</label>
-                            <Input register={register("content", {required:true})} style={defaultInputStyle} type="text" placeholder="Paste a link or any text related stuff.." />
+                            <label className="text-[1rem] font-semibold text-gray-500 ml-1">Content/Link</label>
+                            <Input value={props.content} register={register("content", {required:true})} style={defaultInputStyle} type="text" placeholder="Paste a link or any text related stuff.." />
                         </div>
 
                         <div className="flex flex-col gap-1">
                             <label className="text-[1rem] font-semibold text-gray-500 ml-1">Tags</label>
-                            <Input register={register("tags", {required: false})} style={defaultInputStyle} type="text" placeholder="Tags that best describe your content.. (optional)" />
-                        </div>
-
-
-                       <div className="flex flex-col gap-1 ">
-                            <label className="text-[1rem] font-semibold text-gray-500 ml-1 mb-5">Type (Choose wisely) *</label>
-                            <select
-                               {...register("type")}
-                                className={`${defaultInputStyle} cursor-pointer bg-white border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                                defaultValue="general"
-                            >
-                                <option  className="cursor-pointer" value={ContentType.GENERAL}>Text Content</option>
-                                <option  className="cursor-pointer" value={ContentType.X}>X Link</option>
-                                <option  className="cursor-pointer" value={ContentType.YOUTUBE}>YouTube Link</option>
-                                <option  className="cursor-pointer" value={ContentType.PDF}>PDF Link</option>
-                            </select>
+                            <Input value={props.tags} register={register("tags", {required: false})} style={defaultInputStyle} type="text" placeholder="Tags that best describe your content.. (optional)" />
                         </div>
 
                         <div className="flex gap-5 mt-3">
@@ -130,7 +119,7 @@ export function CreateContentModal(props: ModalBehave) {
                             loading={mutation.isPending}
                             type="submit"
                             startIcon={<Send size={18} />}
-                            text={"Create Brain"}
+                            text={"Update Brain"}
                             variant="primary"
                         />
                     </div>

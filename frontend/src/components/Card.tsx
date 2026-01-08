@@ -1,23 +1,37 @@
-import { Notebook, Trash2Icon, LinkIcon, CopyCheckIcon, EllipsisVerticalIcon, XIcon, ExternalLinkIcon } from "lucide-react"
+import { 
+   Notebook,
+   Trash2Icon,
+   LinkIcon,
+   CopyCheckIcon,
+   EllipsisVerticalIcon,
+   XIcon,
+   ExternalLinkIcon,
+   Edit2Icon
+  } from "lucide-react"
 import { Tweet } from "react-tweet"
 import { ContentType } from "../utils/constants"
 import { YoutubePlayer } from "./YoutubePlayer"
 import { copyToClipboard, getXId, slugify } from "../utils/utils"
 import { useState } from "react"
+import { UpdateContentModal } from "./UpdateContentModal"
 
 interface CardProps {
+  id?:string
   title: string
   content: string
-  type: ContentType
+  type?: ContentType
   tags?: string[] | string
   link?: string
-  createdAt: string
+  createdAt?: string
+  updatedAt: string
   onDelete?: () => void
 }
 
 export function Card(props: CardProps) {
   const [copied, setCopied] = useState(false)
   const [open, setOpen] = useState(false)
+  const [modalOpen, setModalOpen] = useState<boolean>(false)
+
 
   const handleCopy = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -64,8 +78,8 @@ export function Card(props: CardProps) {
             {open && (
               <div className="absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-xl shadow-xl z-30 py-1.5 overflow-hidden animate-in fade-in zoom-in duration-150 origin-top-right">
                 <div className="px-3 py-1 text-[10px] font-bold text-gray-400 uppercase tracking-tight">Actions</div>
-                
                 <button 
+                title="source of the content"
                    className="flex cursor-pointer items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors"
                    onClick={() => { window.open(props.content, '_blank'); setOpen(false); }}
                 >
@@ -75,11 +89,21 @@ export function Card(props: CardProps) {
                 <div className="h-[1px] bg-gray-100 my-1" />
 
                 {/* Editing the brain */}
+                <UpdateContentModal 
+                open={modalOpen}
+                close={() => setModalOpen(false)}
+                id={props.id}
+                title={props.title}
+                content={props.content}
+                tags={props.tags}
+                setcontextOpen={() => setOpen(false)}
+                />
                  <button 
                    className="flex cursor-pointer font-bold items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors"
-                   onClick={() => setOpen(false)}
+                   onClick={ () => setModalOpen(true)}
                 >
-                  <ExternalLinkIcon size={14} /> Edit Brain
+                    <Edit2Icon size={14} /> Edit Brain
+                  
                 </button>
 
 
@@ -147,7 +171,7 @@ export function Card(props: CardProps) {
       {/* Footer Date */}
       <div className="mt-4 pt-3 border-t border-gray-50 flex justify-between items-center">
         <span className="text-gray-500  text-[9px] font-bold flex items-center gap-1">
-          Added {props.createdAt}
+          Added {props.updatedAt}
         </span>
       </div>
     </div>

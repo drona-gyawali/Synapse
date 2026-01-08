@@ -10,6 +10,7 @@ interface inputVariant {
     reference?:any
     register?:UseFormRegisterReturn
     isdisabled?:boolean
+    value?:string
 } 
 
 export function Input(props:inputVariant) {
@@ -24,6 +25,7 @@ export function Input(props:inputVariant) {
             placeholder={props.placeholder}
             onChange={props.onChange}
             disabled={props.isdisabled}
+            defaultValue={props.value}
             />
         </div>
         </>
