@@ -1,14 +1,14 @@
 ### Variables
 @baseUrl = http://localhost:3000/api/v1
 @contentType = application/json
-@Cookie=access-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUzMThhZjBmLTE5OGEtNDIxMS1hMjUzLWU3NGIyNGE3N2VlZCIsInVzZXJuYW1lIjoiZHJvbmEiLCJpYXQiOjE3Njc2MjY4OTcsImV4cCI6MTc2NzYzNzY5N30.rfpMHW8tDV1ctls6ceu_MiSrmsQawYgEx9Wgz9lH1_M; Path=/;
+@Cookie=access-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUzMThhZjBmLTE5OGEtNDIxMS1hMjUzLWU3NGIyNGE3N2VlZCIsInVzZXJuYW1lIjoiZHJvbmEiLCJpYXQiOjE3Njc5NjExNzQsImV4cCI6MTc2Nzk3MTk3NH0.4yjZFju5mNB8zuUon-qLZdDjPAOsjgj2RqCeJcOc92g; Path=/; HttpOnly; SameSite=Lax,refresh-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUzMThhZjBmLTE5OGEtNDIxMS1hMjUzLWU3NGIyNGE3N2VlZCIsInVzZXJuYW1lIjoiZHJvbmEiLCJpYXQiOjE3Njc5NjExNzQsImV4cCI6MTc2Nzk4NjM3NH0.WYVXYNQ_rPxyoHEyEI3Lban9j5byokK8fCG072KyvNM;
 ### Register a new user
 POST {{baseUrl}}/register
 Content-Type: {{contentType}}
 
 {
-    "username": "drona",
-    "email": "dorna@example2.com",
+    "username": "test6",
+    "email": "test6@example2.com",
     "password": "SecurePassword123"
 }
 
@@ -19,7 +19,7 @@ POST {{baseUrl}}/login
 Content-Type: {{contentType}}
 
 {
-    "username": "drona",
+    "username": "test6",
     "password": "SecurePassword123"
 }
 
@@ -119,21 +119,18 @@ GET {{baseUrl}}/content-type?type=youtube
 Content-Type: {{contentType}}
 Cookie: {{Cookie}}
 
+#### View the setting of the user 
+GET {{baseUrl}}/setting
+Content-Type: {{contentType}}
+Cookie: {{Cookie}}
 
-# {
-#   "code": 200,
-#   "details": [
-#     {
-#       "id": "cc426f5f-ec7a-4b4a-99dc-acb96b0f8a46",
-#       "title": "my youtbe blog",
-#       "content": "This is the content body",
-#       "link": "https://example.com",
-#       "tags": "backend,node,prisma",
-#       "type": "youtube",
-#       "isPublic": false,
-#       "userId": "5318af0f-198a-4211-a253-e74b24a77eed",
-#       "createdAt": "2026-01-05T15:33:50.633Z",
-#       "updatedAt": "2026-01-05T15:33:50.633Z"
-#     }
-#   ]
-# }
+
+
+#### Update the setting of the user 
+PUT {{baseUrl}}/setting
+Content-Type: {{contentType}}
+Cookie: {{Cookie}}
+
+{
+  "deactivateAccount": false
+}

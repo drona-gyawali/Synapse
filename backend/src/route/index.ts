@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { RegisterRequest, LoginRequest, userInfo } from '../controller/auth';
 import { authMiddleware } from '../middleware/authMiddleware';
+import { GetSettingRequest, UpdateSettingRequest } from '../controller/setting';
 import {
   ContentCreationRequest,
   GetContentRequest,
@@ -35,4 +36,9 @@ router.get('/content-type', authMiddleware, GetContentType);
 router.get('/share', authMiddleware, shareRequest);
 router.get('/share/:hash', receiverLinkRequest);
 
+/* 
+    Setting Route
+*/
+router.get('/setting', authMiddleware, GetSettingRequest);
+router.put('/setting', authMiddleware, UpdateSettingRequest )
 export default router;

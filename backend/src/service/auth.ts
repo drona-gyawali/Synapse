@@ -3,6 +3,7 @@ import type { RegisterUser, LoginUser } from '../types/global';
 import { hashPassword } from '../utils/crypt';
 import { signinToken } from '../utils/token';
 import logger from '../utils/logger';
+import { createSettting } from './setting';
 
 const userRepo = new UserRepo();
 
@@ -20,6 +21,8 @@ export const register = async (data: RegisterUser) => {
     const createdUser = await userRepo.createUser(_hashPassword);
     const { password, ..._data } = createdUser;
     logger.info(`${createdUser?.username} has been registered `);
+    await createSettting({ userId: createdUser.id })
+    logger.info(`${createdUser?.username} setting created `);
     return _data;
   } catch (error) {
     logger.error(`Registration failed for ${data.username} | details=${error}`);
@@ -34,6 +37,15 @@ export const Login = async (data: LoginUser) => {
     if (!_registered?.id) {
       throw new Error('User never exists');
     }
+
+    const isDeactive = await prisma?.setting.findFirst({
+      where: { userId: _registered.id }
+    })
+
+    if (isDeactive && isDeactive?.deactivateAccount === true) {
+      return null
+    }
+
     const payload = {
       id: _registered?.id,
       username: _registered.username,

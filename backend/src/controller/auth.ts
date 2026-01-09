@@ -40,6 +40,9 @@ export const LoginRequest = async (req: Request, res: Response) => {
       password,
     };
     const login = await Login(payload);
+    if (login == null) {
+      return getResponseMessage(req, res, 400, 'Account is deactivated');
+    }
     if (!login?.access_token) {
       return getResponseMessage(
         req,

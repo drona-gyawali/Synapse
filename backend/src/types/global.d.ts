@@ -31,3 +31,13 @@ export interface Link {
 export type contentUpdate = Omit<Partial<Content>, 'userId'>;
 export type linkUpdate = Omit<Partial<Link>, 'userId'>;
 export type detailType = number | object | undefined | string | unknown;
+
+
+
+export interface Settings {
+    deactiveAccount?: boolean
+    deleteLinks?: boolean
+    language?: string
+    grantPersonalData?: boolean
+    userId: string
+}
