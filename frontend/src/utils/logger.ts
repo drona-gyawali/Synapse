@@ -1,6 +1,3 @@
-
-
-
-export const logger = (data:any) => {
-    console.log(data)
-}
+export const logger = (data: any) => {
+  console.log(data);
+};
