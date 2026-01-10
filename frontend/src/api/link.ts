@@ -1,10 +1,10 @@
-import { queryGet, queryParams } from "./api";
+import { queryGet, queryParams,  SettingPut } from "./api";
 import { logger } from "../utils/logger";
+import type { SettingOptions } from "../types/formTypes";
 
-
-export const shareLink = async () => {
+export const shareLink = async (isPublic = true) => {
     try {
-        const linkCreated = await queryGet("share", "share=true")
+        const linkCreated = await queryGet("share", `share=${isPublic}`)
         if(!linkCreated) {
             return " Link Creation failed"
         }
@@ -22,6 +22,20 @@ export const sendLink = async (hash:string) => {
         }
         return shareLink
     } catch (error) {
+        logger(`link sharing failed  | detail=${error}`)
+    }
+}
+
+
+export const settingUpdate = async (updateSetting:SettingOptions) => {
+    try {
+        const deactivate  = await SettingPut("setting", updateSetting)
+        if(!deactivate) {
+            return  "Update failed"
+        }
+
+        return deactivate
+    }catch(error) {
         logger(`link sharing failed  | detail=${error}`)
     }
 }

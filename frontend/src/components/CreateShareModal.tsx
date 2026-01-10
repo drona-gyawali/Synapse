@@ -1,4 +1,4 @@
-import type { ModalBehave } from "./CreateContentModal";
+import type { ModalBehave } from "../types/formTypes";
 import { LucideExternalLink, BrainCogIcon, Copy, CopyCheckIcon, X } from "lucide-react"
 import { Button } from "./Button";
 import { Input } from "./Input";

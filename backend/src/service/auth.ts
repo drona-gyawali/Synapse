@@ -21,7 +21,7 @@ export const register = async (data: RegisterUser) => {
     const createdUser = await userRepo.createUser(_hashPassword);
     const { password, ..._data } = createdUser;
     logger.info(`${createdUser?.username} has been registered `);
-    await createSettting({ userId: createdUser.id })
+    await createSettting({ userId: createdUser.id });
     logger.info(`${createdUser?.username} setting created `);
     return _data;
   } catch (error) {
@@ -39,11 +39,11 @@ export const Login = async (data: LoginUser) => {
     }
 
     const isDeactive = await prisma?.setting.findFirst({
-      where: { userId: _registered.id }
-    })
+      where: { userId: _registered.id },
+    });
 
     if (isDeactive && isDeactive?.deactivateAccount === true) {
-      return null
+      return null;
     }
 
     const payload = {

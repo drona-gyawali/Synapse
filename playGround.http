@@ -1,7 +1,7 @@
 ### Variables
 @baseUrl = http://localhost:3000/api/v1
 @contentType = application/json
-@Cookie=access-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUzMThhZjBmLTE5OGEtNDIxMS1hMjUzLWU3NGIyNGE3N2VlZCIsInVzZXJuYW1lIjoiZHJvbmEiLCJpYXQiOjE3Njc5NjExNzQsImV4cCI6MTc2Nzk3MTk3NH0.4yjZFju5mNB8zuUon-qLZdDjPAOsjgj2RqCeJcOc92g; Path=/; HttpOnly; SameSite=Lax,refresh-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUzMThhZjBmLTE5OGEtNDIxMS1hMjUzLWU3NGIyNGE3N2VlZCIsInVzZXJuYW1lIjoiZHJvbmEiLCJpYXQiOjE3Njc5NjExNzQsImV4cCI6MTc2Nzk4NjM3NH0.WYVXYNQ_rPxyoHEyEI3Lban9j5byokK8fCG072KyvNM;
+@Cookie=access-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRlODBmMDZlLTJiNjctNDM2NS04M2VkLThkMjYwMzcxOTYzNyIsInVzZXJuYW1lIjoidGVzdDYiLCJpYXQiOjE3NjgwNDMzOTMsImV4cCI6MTc2ODA1NDE5M30.5XbAgP832eRfltf-hjBH7Cjbzarcl4DanyfR3id3i1Q;
 ### Register a new user
 POST {{baseUrl}}/register
 Content-Type: {{contentType}}
@@ -134,3 +134,8 @@ Cookie: {{Cookie}}
 {
   "deactivateAccount": false
 }
+
+### Logout the user 
+GET {{baseUrl}}/logout
+Content-Type: {{contentType}}
+Cookie: {{Cookie}}

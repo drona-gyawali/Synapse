@@ -3,19 +3,12 @@ import { Button } from "./Button";
 import { Input } from "./Input";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import type { contentformField } from "../types/formTypes";
+import type { contentformField, ModalBehave } from "../types/formTypes";
 import { UpdateContent } from "../api/content";
 import { defaultInputStyle } from "../pages/Signin";
 import { useQueryClient } from "@tanstack/react-query";
 
 
-export interface ModalBehave extends contentformField {
-    open: boolean;
-    close: () => void;
-    id?:string
-    setcontextOpen?: () => void;
-   
-}
 
 export function UpdateContentModal(props: ModalBehave) {
     if (!props.open) return null;
@@ -24,24 +17,17 @@ export function UpdateContentModal(props: ModalBehave) {
             isPublic: true
         }
     })
-
     const isPublic = watch("isPublic")
-
-
     const handleToggle = () => {
         setValue("isPublic", !isPublic)
     }
 
-    
-
-    // To trigger it:
-    // mutation.mutate({ id: '123', data: myFormData });
     const queryClient = useQueryClient()
     const mutation = useMutation({
         mutationFn: ({ id, data }: { id: string, data: any }) => UpdateContent(id, data),
         onSuccess: () => {
            props.setcontextOpen &&  props?.setcontextOpen()
-            props.close();
+            props.close && props.close();
             queryClient.invalidateQueries(["content"]);
         }
     });

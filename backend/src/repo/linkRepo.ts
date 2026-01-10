@@ -35,16 +35,18 @@ class LinkRepo {
       const delLink = await prisma.link.deleteMany({
         where: { userId: userId },
       });
-      
+
       const _updateSetting = await updateSettting({
         userId: userId,
-        deleteLinks: true
-      })
+        deleteLinks: true,
+      });
 
-      if(!_updateSetting) {
-        logger.error(`User ${userId} data is not updated in settings| ${_updateSetting}`)
+      if (!_updateSetting) {
+        logger.error(
+          `User ${userId} data is not updated in settings| ${_updateSetting}`
+        );
       }
-      
+
       return Boolean(delLink.count > 0);
     } catch (error) {
       logger.error(`Delete operation failed ${getErrorMessage(error)}`);

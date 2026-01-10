@@ -1,12 +1,12 @@
 import { Post, Get, queryGet, delContent, Put } from "./api";
-import  type { contentformField } from "../types/formTypes";
+import type { contentformField } from "../types/formTypes";
 import { logger } from "../utils/logger";
 
 
-export const createContent = async (data:contentformField) => {
+export const createContent = async (data: contentformField) => {
     try {
-        const contentCreated = await Post("content",data)
-        if(!contentCreated) {
+        const contentCreated = await Post("content", data)
+        if (!contentCreated) {
             return " Content Creation failed"
         }
         return contentCreated
@@ -17,8 +17,8 @@ export const createContent = async (data:contentformField) => {
 
 export const getContent = async () => {
     try {
-        const fetchContent = await  Get("content")
-        if(!fetchContent) {
+        const fetchContent = await Get("content")
+        if (!fetchContent) {
             return "Fetch content Falied"
         }
         console.log(fetchContent.details)
@@ -30,10 +30,10 @@ export const getContent = async () => {
 }
 
 
-export const getContentbyTab = async (tab:string) => {
+export const getContentbyTab = async (tab: string) => {
     try {
-        const fetchContent = await  queryGet("content-type", `type=${tab}`)
-        if(!fetchContent) {
+        const fetchContent = await queryGet("content-type", `type=${tab}`)
+        if (!fetchContent) {
             return "Fetch content Falied"
         }
         return fetchContent
@@ -43,23 +43,21 @@ export const getContentbyTab = async (tab:string) => {
 }
 
 
-export const delContentbyId = async (id:string) => {
+export const delContentbyId = async (id: string) => {
     try {
         const _delContent = await delContent("content", id)
-        if(!_delContent) {return  "Deletion content failed"}
+        if (!_delContent) { return "Deletion content failed" }
         return _delContent
-    }catch (error) {
+    } catch (error) {
         logger(`Delete content failed  | detail=${error}`)
     }
 }
 
 
-
-
-export const UpdateContent = async (id:string, data:contentformField) => {
+export const UpdateContent = async (id: string, data: contentformField) => {
     try {
         const updated = await Put("content", id, data)
-        if(!updated) {
+        if (!updated) {
             return " Content updation failed"
         }
         return updated

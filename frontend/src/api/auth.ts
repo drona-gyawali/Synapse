@@ -37,3 +37,19 @@ export async function CheckAuth() {
         logger(`Info route failed | ${error}`)
     }
 }
+
+
+
+export async function Logout() {
+    try {
+        const response = await  Get("logout")
+        console.log(response)
+        if(response.code == 200) {
+            return true
+        }else {
+            return false
+        }
+    } catch (error) {
+        logger(`logout route failed | ${error}`)
+    }
+}

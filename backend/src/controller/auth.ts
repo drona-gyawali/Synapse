@@ -3,6 +3,7 @@ import { LoginUser, RegisterUser } from '../types/global';
 import { Login, register } from '../service/auth';
 import { getResponseMessage, getErrorMessage } from '../utils/utils';
 import logger from '../utils/logger';
+import { CookieOptions } from 'express';
 
 export const RegisterRequest = async (req: Request, res: Response) => {
   try {
@@ -52,6 +53,7 @@ export const LoginRequest = async (req: Request, res: Response) => {
       );
     }
     res.cookie('access-token', login.access_token, {
+      maxAge: 90000,
       httpOnly: true,
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
@@ -59,6 +61,7 @@ export const LoginRequest = async (req: Request, res: Response) => {
     });
 
     res.cookie('refresh-token', login.refresh_token, {
+      maxAge: 604800,
       httpOnly: true,
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
@@ -86,5 +89,34 @@ export const userInfo = (req: Request, res: Response) => {
   } catch (error) {
     logger.error(getErrorMessage(error));
     return getResponseMessage(req, res, 500, 'Internal server error');
+  }
+};
+
+export const logout = (req: Request, res: Response) => {
+  try {
+    const access_token = req.cookies['access-token'];
+    const refresh_token = req.cookies['refresh-token'];
+    if (!access_token && !refresh_token) {
+      return getResponseMessage(req, res, 200, 'User logout');
+    }
+
+    const Options: CookieOptions = {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+    };
+
+    res.clearCookie('access-token', Options);
+    res.clearCookie('refresh-token', Options);
+
+    return getResponseMessage(req, res, 200, 'Logout operation sucessfull');
+  } catch (error) {
+    return getResponseMessage(
+      req,
+      res,
+      500,
+      'Internal server error during logout'
+    );
   }
 };

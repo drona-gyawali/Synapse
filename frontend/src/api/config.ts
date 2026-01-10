@@ -8,7 +8,7 @@ export interface Route {
 
 export const apiRoute = (route:Route) => {
     let url= `${ENDPOINT_BASE}${route.endpoint}`
-    if(route.params) {url+=`/${route.params}`}
+    if(route.params ) {url+=`/${route.params}`}
     if(route.query) {url+=`?${route.query}`} 
     return url
 }

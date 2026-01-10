@@ -3,18 +3,12 @@ import { Button } from "./Button";
 import { Input } from "./Input";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import type { contentformField } from "../types/formTypes";
+import type { contentformField, ModalBehave } from "../types/formTypes";
 import { createContent } from "../api/content";
 import { defaultInputStyle } from "../pages/Signin";
 import { ContentType } from "../utils/constants";
 import { useQueryClient } from "@tanstack/react-query";
 
-export interface ModalBehave extends contentformField {
-    open: boolean;
-    close: () => void;
-    
-    
-}
 
 export function CreateContentModal(props: ModalBehave) {
     if (!props.open) return null;
@@ -36,7 +30,7 @@ export function CreateContentModal(props: ModalBehave) {
     const mutation = useMutation({
         mutationFn: createContent,
         onSuccess: () => {
-            props.close()
+            props.close && props.close()
             queryClient.invalidateQueries(["content"])
         }
     })

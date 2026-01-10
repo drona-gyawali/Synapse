@@ -1,7 +1,8 @@
 import { BrainCogIcon } from "lucide-react"
-import { TwitterIcon, VideoIcon, NotebookTabsIcon, HomeIcon } from "lucide-react"
+import { TwitterIcon, Settings2Icon, VideoIcon, NotebookTabsIcon, HomeIcon } from "lucide-react"
 import {type SetURLSearchParams } from "react-router-dom"
-
+import { useState } from "react"
+import Setting from "./Setting"
 
 const defaultStyle = "mt-[10%]  flex  items-center gap-4 hover:bg-gray-200 p-2 rounded-lg cursor-pointer"
 const proStyle = "mt-[10%] flex items-center gap-4  hover:bg-gray-200 bg-gray-200 p-2 rounded-lg cursor-pointer"
@@ -12,6 +13,8 @@ interface tab {
 }
 
 export function Sidebar(props:tab) {
+    const [modalOpen , setModalOpen] = useState<boolean>(false);
+
     return (
         <div className="h-screen bg-white border-r border-gray-200 w-72 fixed left-0 top-0">
             <div className="p-5 ">
@@ -39,9 +42,20 @@ export function Sidebar(props:tab) {
                         Videos
                         </div>
                 </div>
-                <div onClick={() => props.setSearchParams({tab: "pdf"})}  className={ props.currentTab !== "pdf" ? defaultStyle : proStyle}>
+                <div onClick={() => props.setSearchParams({tab: "pdf"}) }  className={ props.currentTab !== "pdf" ? defaultStyle : proStyle}>
                     <div className="text-gray-400 ">{<NotebookTabsIcon size={27}/>}</div>
                     <div  className="font-bold hover:text-gray-500 text-gray-500 cursor-pointer">Documents</div>
+                </div>
+
+                <Setting 
+                open={modalOpen}
+                close={() => setModalOpen(false)}
+                />
+                <div onClick={() => {
+                    setModalOpen(true);                    
+                } }  className={ props.currentTab !== "setting" ? defaultStyle : proStyle}>
+                    <div className="text-gray-400 ">{<Settings2Icon size={27}/>}</div>
+                    <div  className="font-bold hover:text-gray-500 text-gray-500 cursor-pointer">Setting</div>
                 </div>
             </div>
         </div>

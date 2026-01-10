@@ -84,9 +84,23 @@ export const delContent = async (endpointName:string, params:string , data?:any)
 
 
 
-export const Put = async (endpointName:string, id:string,  data?:any) => {
+export const Put = async (endpointName:string, params?:string,  data?:any) => {
     try {
-        const  response = await apiClient.patch(apiRoute({endpoint: endpointName, params: id}), data) 
+        const  response = await apiClient.patch(apiRoute({endpoint: endpointName, params}), data) 
+        
+        if(response.status == 404) {
+            return null
+        }
+        return response.data  
+    } catch (error) {
+        logger(`Error Occured in update operation| routeName=${endpointName} | details=${error}`)
+        return error
+    }
+}
+
+export const SettingPut = async (endpointName:string,  data?:any) => {
+    try {
+        const  response = await apiClient.put(apiRoute({endpoint: endpointName}), data) 
         
         if(response.status == 404) {
             return null
