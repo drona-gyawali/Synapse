@@ -53,7 +53,7 @@ export const LoginRequest = async (req: Request, res: Response) => {
       );
     }
     res.cookie('access-token', login.access_token, {
-      maxAge: 90000,
+      maxAge: 604800,
       httpOnly: true,
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',

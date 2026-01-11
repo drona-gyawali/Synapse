@@ -39,11 +39,14 @@ export const updateSettting = async (input: Settings) => {
 export const getSetting = async (userId: string) => {
   try {
     if (!userId) return null;
-    const _data = prisma.setting.findFirst({
+    const _data = await prisma.setting.findFirst({
       where: { userId },
     });
 
+    // @depreciate: not removing just for ref
+    // if(!data){..} this is deadlock block : beacuse data migration has been applied here: 20260111121659_backfill_settings
     if (!_data) {
+      logger.error(`No setting found for legacy user ${userId}`);
       return null;
     }
 

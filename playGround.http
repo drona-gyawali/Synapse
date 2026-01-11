@@ -19,8 +19,8 @@ POST {{baseUrl}}/login
 Content-Type: {{contentType}}
 
 {
-    "username": "test6",
-    "password": "SecurePassword123"
+    "username": "@mama",
+    "password": "ZD6K6;:Ep2?!F:u"
 }
 
 ###
