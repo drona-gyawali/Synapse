@@ -24,3 +24,5 @@ export function getResponseMessage(
   };
   return res.status(code).json(data);
 }
+
+export const REDIS_KEY = 'VERIFICATION-';

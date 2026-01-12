@@ -12,6 +12,7 @@ export interface LoginUser {
 export interface TokenPayload {
   id?: string;
   username?: string;
+  email?: string;
 }
 
 export interface Content {

@@ -1,10 +1,12 @@
-import { Response, Request } from 'express';
+import { Response, Request, response } from 'express';
 import { LoginUser, RegisterUser } from '../types/global';
 import { Login, register } from '../service/auth';
-import { getResponseMessage, getErrorMessage } from '../utils/utils';
+import { getResponseMessage, getErrorMessage, REDIS_KEY } from '../utils/utils';
 import logger from '../utils/logger';
 import { CookieOptions } from 'express';
-
+import * as redisService from '../service/redis';
+import { prisma } from '../config/db';
+import { emailQueue } from '../job/queue';
 export const RegisterRequest = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;
@@ -80,8 +82,7 @@ export const LoginRequest = async (req: Request, res: Response) => {
 export const userInfo = (req: Request, res: Response) => {
   try {
     const user = req?.user;
-    const data = { id: user?.id, username: user?.username };
-
+    const data = { id: user?.id, username: user?.username, email: user?.email };
     if (!user) {
       return getResponseMessage(req, res, 403, 'Unauthorized access');
     }
@@ -118,5 +119,67 @@ export const logout = (req: Request, res: Response) => {
       500,
       'Internal server error during logout'
     );
+  }
+};
+
+export const emailVerificationCreation = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const userId = req.user?.id;
+
+    const username = req.user?.username;
+    const email = req.user?.email;
+    const createHash = await redisService.createAndStoreHash(String(userId));
+    if (createHash == null) {
+      return getResponseMessage(req, res, 400, 'Error to create otp for user');
+    }
+    await emailQueue.add('send-verification', {
+      senderName: username,
+      link: createHash,
+      email,
+    });
+
+    const constructUrl =
+      process.env.NODE_ENV == 'dev'
+        ? process.env.FRONTEND_VERIFICATION_DEV
+        : process.env.FRONTEND_VERIFICATION_PROD;
+    const link = `${constructUrl}${createHash}`;
+    return getResponseMessage(req, res, 201, link);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const emailVerficationReciver = async (req: Request, res: Response) => {
+  try {
+    const { hashId } = req.params;
+    const userId = req?.user?.id;
+    if (!hashId) {
+      return getResponseMessage(req, res, 400, 'Hash missing');
+    }
+    const storedToken = await redisService.getToken(`${String(userId)}`);
+    if (storedToken == null) {
+      return getResponseMessage(req, res, 400, 'Invalid verification token');
+    }
+    const isVerified = await redisService.isVerifiedToken(
+      String(hashId),
+      String(storedToken)
+    );
+    if (!isVerified) {
+      return getResponseMessage(req, res, 401, 'Verification failed');
+    }
+    const updateVerification = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        isVerified: true,
+      },
+    });
+    logger.info(`${updateVerification.id} email has been verified`);
+    return getResponseMessage(req, res, 200, 'Token verified');
+  } catch (error) {
+    logger.error(`Error verifying user email| details=${error}`);
+    throw error;
   }
 };

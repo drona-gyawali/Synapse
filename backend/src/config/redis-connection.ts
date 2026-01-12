@@ -1,20 +1,19 @@
+import { truncates } from 'bcrypt-ts';
 import Redis from 'ioredis';
-import { REDIS_URL } from './conf';
 
 declare global {
-  var redis: Redis;
+  var redis: Redis | undefined;
 }
 
-if (!redis) {
-  redis = new Redis({
-    port: Number(process.env.REDIS_PORT),
-    host: process.env.REDIS_HOST,
-    password: process.env.REDIS_PASSWORD,
+const redis =
+  global.redis ??
+  new Redis(process.env.REDIS_URL!, {
+    maxRetriesPerRequest: null,
+    enableReadyCheck: true,
   });
-}
 
 if (process.env.NODE_ENV !== 'production') {
-  global.redis == global.redis || redis;
+  global.redis = redis;
 }
 
 export { redis };

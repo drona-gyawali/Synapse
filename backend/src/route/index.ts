@@ -4,6 +4,8 @@ import {
   LoginRequest,
   userInfo,
   logout,
+  emailVerficationReciver,
+  emailVerificationCreation,
 } from '../controller/auth';
 import { authMiddleware } from '../middleware/authMiddleware';
 import { GetSettingRequest, UpdateSettingRequest } from '../controller/setting';
@@ -26,6 +28,8 @@ router.post('/register', RegisterRequest);
 router.post('/login', LoginRequest);
 router.get('/info', authMiddleware, userInfo);
 router.get('/logout', authMiddleware, logout);
+router.get('/initate-verification', authMiddleware, emailVerificationCreation);
+router.get('/verification/:hashId', authMiddleware, emailVerficationReciver);
 
 /*
     Content Route
@@ -47,4 +51,5 @@ router.get('/share/:hash', receiverLinkRequest);
 */
 router.get('/setting', authMiddleware, GetSettingRequest);
 router.put('/setting', authMiddleware, UpdateSettingRequest);
+
 export default router;

@@ -49,6 +49,7 @@ export const Login = async (data: LoginUser) => {
     const payload = {
       id: _registered?.id,
       username: _registered.username,
+      email: _registered.email,
     };
     const access_token = signinToken(payload, '3h');
     const refresh_token = signinToken(payload, '7h');
