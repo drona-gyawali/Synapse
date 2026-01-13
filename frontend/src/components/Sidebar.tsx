@@ -24,7 +24,7 @@ export function Sidebar(props: tab) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   return (
-    <div className="h-screen bg-white border-r border-gray-200 w-72 fixed left-0 top-0">
+    <div className="h-screen bg-white border-r border-gray-200 w-72 absolute ">
       <div className="p-5 ">
         <div className="flex items-center  gap-5 ">
           <div className="text-blue-500">{<BrainCogIcon size={30} />}</div>

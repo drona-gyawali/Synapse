@@ -1,7 +1,7 @@
-import { Post } from './api';
+import { Post, Get } from './api';
 import { logger } from '../utils/logger';
 import { type formField } from '../types/formTypes';
-import { Get } from './api';
+import { queryParams } from './api';
 
 export async function signup(data: formField) {
   try {
@@ -29,6 +29,32 @@ export async function CheckAuth() {
     console.log(response);
     if (response.code == 200 && response.details.id) {
       return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    logger(`Info route failed | ${error}`);
+  }
+}
+
+export async function initateEmail() {
+  const response = await Get('initate-verification');
+  return response.code === 200;
+}
+
+export async function verifyEmail(hash: string) {
+  const response = await queryParams('verification', hash);
+  if (response.status === 400 || 401) {
+    throw new Error('Verification failed');
+  }
+  return true;
+}
+
+export async function Info() {
+  try {
+    const response = await Get('info');
+    if (response.code == 200 && response.details.id) {
+      return response;
     } else {
       return false;
     }

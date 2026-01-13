@@ -17,7 +17,7 @@ export const conf = {
 };
 
 const mailConfigOptions = {
-  host: 'smtp.resend.com',
+  host: process.env.DEV_HOST,
   port: 587,
   secure: false,
   auth: {

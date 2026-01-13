@@ -1,15 +1,15 @@
 ### Variables
 @baseUrl = http://localhost:3000/api/v1
 @contentType = application/json
-@Cookie=access-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRlODBmMDZlLTJiNjctNDM2NS04M2VkLThkMjYwMzcxOTYzNyIsInVzZXJuYW1lIjoidGVzdDYiLCJpYXQiOjE3NjgwNDMzOTMsImV4cCI6MTc2ODA1NDE5M30.5XbAgP832eRfltf-hjBH7Cjbzarcl4DanyfR3id3i1Q;
+@Cookie= access-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgyYTY1OWQxLWNjODItNDhkYS1hODcxLWZiMjNkNDVlZmE5YSIsInVzZXJuYW1lIjoiZWMyIiwiZW1haWwiOiJlY2ZyZWVpbnN0YW5jZUBnbWFpbC5jb20iLCJpYXQiOjE3NjgyMzM0NDEsImV4cCI6MTc2ODI0NDI0MX0.QneHpJ6MVC-5T5zHDkl47viXTDsnRWJZEEyodr2NrZk;  
 ### Register a new user
 POST {{baseUrl}}/register
 Content-Type: {{contentType}}
 
 {
-    "username": "test6",
-    "email": "test6@example2.com",
-    "password": "SecurePassword123"
+    "username": "ec2",
+    "email": "ecfreeinstance@gmail.com",
+    "password": "ZD6K6;:Ep2?!F:u"
 }
 
 ###
@@ -19,7 +19,7 @@ POST {{baseUrl}}/login
 Content-Type: {{contentType}}
 
 {
-    "username": "@mama",
+    "username": "ec2",
     "password": "ZD6K6;:Ep2?!F:u"
 }
 
@@ -139,3 +139,17 @@ Cookie: {{Cookie}}
 GET {{baseUrl}}/logout
 Content-Type: {{contentType}}
 Cookie: {{Cookie}}
+
+
+### initate email verification 
+GET {{baseUrl}}/initate-verification
+Content-Type: {{contentType}}
+Cookie: {{Cookie}}
+
+
+
+### verified user email address
+GET {{baseUrl}}/verification/e75b8d7b-fe1f-40e6-ae58-897c75a04dbf
+Content-Type: {{contentType}}
+Cookie: {{Cookie}}
+

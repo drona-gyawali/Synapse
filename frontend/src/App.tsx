@@ -5,6 +5,7 @@ import { Signin } from './pages/Signin';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import RecieveDashboard from './pages/RecieveDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
+import { VerifyEmail } from './pages/VerifyEmail';
 
 function App() {
   return (
@@ -18,6 +19,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/verifyEmail/:hash?"
+            element={
+              <ProtectedRoute>
+                <VerifyEmail />
               </ProtectedRoute>
             }
           />

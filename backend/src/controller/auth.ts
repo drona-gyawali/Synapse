@@ -79,10 +79,18 @@ export const LoginRequest = async (req: Request, res: Response) => {
   }
 };
 
-export const userInfo = (req: Request, res: Response) => {
+export const userInfo = async (req: Request, res: Response) => {
   try {
     const user = req?.user;
-    const data = { id: user?.id, username: user?.username, email: user?.email };
+    const userData = await prisma.user.findUnique({
+      where: { id: user?.id },
+    });
+    const data = {
+      id: user?.id,
+      username: user?.username,
+      email: user?.email,
+      isVerified: userData?.isVerified,
+    };
     if (!user) {
       return getResponseMessage(req, res, 403, 'Unauthorized access');
     }

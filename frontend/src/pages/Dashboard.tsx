@@ -10,6 +10,7 @@ import { getContent, getContentbyTab } from '../api/content';
 import { CreateShareModal } from '../components/CreateShareModal';
 import { useSearchParams } from 'react-router-dom';
 import { delContentbyId } from '../api/content';
+import { HeadLine } from '../components/headline';
 
 function Dashboard() {
   const queryClient = useQueryClient();
@@ -48,59 +49,63 @@ function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Sidebar currentTab={_tab} setSearchParams={setSearchParams} />
-      <div className="ml-72 p-8">
-        <CreateShareModal
-          open={modalOpen1}
-          close={() => setModalOpen1(false)}
-        />
-        <CreateContentModal
-          open={modalOpen}
-          close={() => setModalOpen(false)}
-        />
-
-        {/* Header Actions */}
-        <div className="flex justify-end items-center gap-4 mb-8">
-          <Button
-            onClick={() => setModalOpen1(true)}
-            variant="secondary"
-            text="Share Brain"
-            startIcon={<Share2Icon size={18} />}
+    <>
+      <HeadLine
+        text="Notice: Please verify your email address before feb 7 to unlock app features"
+        link="/VerifyEmail"
+      />
+      <div className="min-h-screen bg-gray-50 ">
+        <Sidebar currentTab={_tab} setSearchParams={setSearchParams} />
+        <div className="ml-72 p-8">
+          <CreateShareModal
+            open={modalOpen1}
+            close={() => setModalOpen1(false)}
           />
-          <Button
-            onClick={() => setModalOpen(true)}
-            variant="primary"
-            text="Add Content"
-            startIcon={<PlusCircle size={18} />}
+          <CreateContentModal
+            open={modalOpen}
+            close={() => setModalOpen(false)}
           />
-        </div>
+          <div className="flex justify-end items-center gap-4 mb-8">
+            <Button
+              onClick={() => setModalOpen1(true)}
+              variant="secondary"
+              text="Share Brain"
+              startIcon={<Share2Icon size={18} />}
+            />
+            <Button
+              onClick={() => setModalOpen(true)}
+              variant="primary"
+              text="Add Content"
+              startIcon={<PlusCircle size={18} />}
+            />
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {isLoading ? (
-            <p>Loading...</p>
-          ) : isError || !normalizeContent?.length ? (
-            <p className="flex justify-center items-center text-1xl font-bold text-gray-500">
-              No content yet.
-            </p>
-          ) : (
-            normalizeContent?.map((item: any) => (
-              <Card
-                key={item?.id}
-                title={item?.title}
-                id={item?.id}
-                content={item?.content}
-                type={item?.type}
-                tags={item?.tags}
-                createdAt={new Date(item?.createdAt).toDateString()}
-                updatedAt={new Date(item?.updatedAt).toDateString()}
-                onDelete={() => onDel(item?.id)}
-              />
-            ))
-          )}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {isLoading ? (
+              <p>Loading...</p>
+            ) : isError || !normalizeContent?.length ? (
+              <p className="flex justify-center items-center text-1xl font-bold text-gray-500">
+                No content yet.
+              </p>
+            ) : (
+              normalizeContent?.map((item: any) => (
+                <Card
+                  key={item?.id}
+                  title={item?.title}
+                  id={item?.id}
+                  content={item?.content}
+                  type={item?.type}
+                  tags={item?.tags}
+                  createdAt={new Date(item?.createdAt).toDateString()}
+                  updatedAt={new Date(item?.updatedAt).toDateString()}
+                  onDelete={() => onDel(item?.id)}
+                />
+              ))
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
