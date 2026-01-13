@@ -1,5 +1,5 @@
 
-# Synapse - Your second Brain 
+# Synapse - Your second Brain
 
 > **"Never lose a thought again."** > Found something interesting online? A video, a PDF, or a deep-dive article? Don't let it slip away. **Synapse** is a centralized platform to store, organize, and share your digital knowledge with the world at your fingertips.
 
@@ -24,8 +24,8 @@ https://github.com/user-attachments/assets/59a8bfd4-f686-44b6-be39-dccb816d29e7
 ### Prerequisites
 
 * **Node.js** (v20 or higher recommended)
-* **npm** 
-* **Postgresql** 
+* **npm**
+* **Postgresql**
 
 ### Installation
 
@@ -40,7 +40,11 @@ cd backend
 ```bash
 npm install
 
+// **Separate process for fe and be**
 npm run dev
+
+// ** Separate process to run email service
+npm run worker
 ```
 
 ### API Guide
